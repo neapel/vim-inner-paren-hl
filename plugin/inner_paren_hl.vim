@@ -5,13 +5,13 @@ if exists("g:loaded_inner_paren_hl") || &cp || !exists("##CursorMoved")
 endif
 let g:loaded_inner_paren_hl = 1
 
-let g:inner_paren_hl_searchpairpos_timeout = get(g:, 'inner_paren_hl_searchpairpos_timeout', 3)
+let g:inner_paren_hl_searchpairpos_timeout = get(g:, 'inner_paren_hl_searchpairpos_timeout', 10)
 
 augroup inner_paren_hl
-	autocmd! CursorMoved,CursorMovedI,WinEnter * call s:do_highlight()
+	autocmd! CursorMoved,CursorMovedI,WinEnter * call s:inner_paren_hl_do()
 augroup END
 
-if exists("*s:do_highlight")
+if exists("*s:inner_paren_hl_do")
 	finish
 endif
 
@@ -24,8 +24,7 @@ set cpo-=C
 " -> https://github.com/nathanaelkane/vim-indent-guides/
 highlight innerparenhlSpan guibg=#ffffff
 
-
-function! s:do_highlight()
+function! s:inner_paren_hl_do()
 	if pumvisible() || (&t_Co < 8 && !has("gui_running"))
 		return
 	endif
@@ -42,6 +41,8 @@ function! s:do_highlight()
 
 	for pair in split(&l:matchpairs, ',')
 		let [p_open, p_close] = split(pair, ':')
+		let p_open = '\V' . escape(p_open, '/\')
+		let p_close = '\V' . escape(p_close, '/\')
 		" search backwards for opener
 		let pstart = searchpairpos(p_open, '', p_close, 'bnW', s_skip, stopline, g:inner_paren_hl_searchpairpos_timeout)
 		if pstart[0] >= gstart[0] && pstart[1] >= gstart[1]

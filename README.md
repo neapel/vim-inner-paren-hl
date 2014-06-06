@@ -1,7 +1,8 @@
 # vim-inner-paren-hl
 
-
 Highlights surrounding parentheses as the cursor moves.
+
+![](sample.gif)
 
 Inspired by [vim-matchopen](https://github.com/haruyama/vim-matchopen).
 

@@ -1,6 +1,6 @@
 # vim-inner-paren-hl
 
-Highlights surrounding parentheses as the cursor moves.
+Highlights the space between surrounding parentheses as the cursor moves.
 
 ![](sample.gif)
 
